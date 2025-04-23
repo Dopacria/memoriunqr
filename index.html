@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MemoriumQR - Conectando Memórias para Eternidade</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    // Adding the specific light background and accent colors
+                    colors: {
+                        'light-primary-bg': '#ffffff', // White
+                        'light-secondary-bg': '#f3f4f6', // Tailwind gray-100 for alternation
+                        'accent-blue': '#2563eb',    // Tailwind blue-600
+                        'accent-light-blue': '#60a5fa', // Tailwind blue-400 (for subtle highlights)
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Light Theme Adaptation using requested colors */
+        body {
+            font-family: 'Lato', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #ffffff; /* light-primary-bg */
+            color: #1f2937; /* gray-800 - Default dark text */
+        }
+        .hero-bg {
+            /* New image background with reduced overlay opacity and adjusted position */
+            background-image: linear-gradient(rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.4)), url('https://i.postimg.cc/FHwGH9n6/anjo3.png');
+            background-size: cover;
+            background-position: center 20%; /* Moved 20% down from the top, horizontally centered */
+             /* Re-added the light overlay with reduced opacity */
+        }
+        .title-font {
+            font-family: 'Playfair Display', serif;
+        }
+        .service-card {
+             border: 1px solid #d1d5db; /* gray-300 */
+             background-color: #ffffff; /* light-primary-bg */
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.2); /* Brighter blue shadow */
+            border-color: #2563eb; /* Add blue border on hover */
+        }
+        .testimonial-card {
+            transition: all 0.3s ease;
+             border: 1px solid #d1d5db; /* gray-300 */
+             background-color: #f3f4f6; /* light-secondary-bg */
+        }
+        .testimonial-card:hover {
+            transform: scale(1.02);
+            border-color: #9ca3af; /* gray-400 */
+        }
+        .nav-link {
+            position: relative;
+            padding-bottom: 4px;
+        }
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #2563eb; /* accent-blue */
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover:after {
+            width: 100%;
+        }
+         .parallax {
+            position: relative;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        /* Light Theme Form Styling */
+        .memorial-form input,
+        .memorial-form textarea,
+        .memorial-form select {
+            border: none;
+            border-bottom: 1px solid #d1d5db; /* gray-300 */
+            transition: all 0.3s ease;
+            background-color: transparent;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            color: #1f2937; /* gray-800 */
+        }
+        .memorial-form input::placeholder,
+        .memorial-form textarea::placeholder {
+             color: #6b7280; /* gray-500 */
+             opacity: 1;
+        }
+        .memorial-form input:focus,
+        .memorial-form textarea:focus,
+        .memorial-form select:focus {
+            border-bottom: 2px solid #2563eb; /* accent-blue */
+            outline: none;
+        }
+        .memorial-form input[type="date"],
+        .memorial-form select {
+             color: #1f2937; /* gray-800 */
+        }
+        /* Style for select arrow in light mode */
+        .memorial-form select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3csvg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+            appearance: none;
+        }
+         /* Light theme option style */
+        .memorial-form option {
+            background-color: #f3f4f6; /* light-secondary-bg */
+            color: #1f2937; /* gray-800 */
+        }
+
+
+        .hidden-section {
+            display: none;
+        }
+        .blog-image, .portfolio-image {
+             background-size: cover;
+             background-position: center;
+             height: 200px;
+        }
+         /* Light Theme Checkbox */
+        .form-checkbox {
+            appearance: none;
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 1px solid #9ca3af; /* gray-400 */
+            border-radius: 0.25rem;
+            display: inline-block;
+            position: relative;
+            vertical-align: middle;
+            cursor: pointer;
+            background-color: #ffffff; /* light-primary-bg */
+            transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+        }
+        .form-checkbox:checked {
+            background-color: #2563eb; /* accent-blue */
+            border-color: #2563eb; /* accent-blue */
+        }
+        .form-checkbox:checked::after {
+            content: '';
+            position: absolute;
+            left: 0.375rem;
+            top: 0.125rem;
+            width: 0.375rem;
+            height: 0.75rem;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+         /* Specific styles for form inputs within contact form */
+        #contact-section input,
+        #contact-section textarea {
+             background-color: #f3f4f6; /* light-secondary-bg */
+             border: 1px solid #d1d5db; /* gray-300 */
+             border-bottom: 1px solid #d1d5db; /* Reset border-bottom specific style */
+             padding: 0.5rem 1rem; /* Add padding */
+             color: #1f2937; /* gray-800 */
+        }
+         #contact-section input:focus,
+        #contact-section textarea:focus {
+             border-color: #2563eb; /* accent-blue */
+             border-bottom: 1px solid #2563eb; /* Ensure focus border */
+             outline: none;
+             box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        }
+
+    </style>
+</head>
+<body class="bg-white text-gray-800">
+
+    <!-- Navigation -->
+    <nav class="bg-light-secondary-bg shadow-lg sticky top-0 z-50 border-b border-gray-300" id="main-nav">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center mr-3 shrink-0 border border-gray-300">
+                        <i class="fas fa-qrcode text-accent-blue text-xl"></i>
+                    </div>
+                    <a href="#" class="text-2xl font-semibold text-gray-900 title-font">MemoriumQR</a>
+                </div>
+                <div class="hidden md:flex items-center space-x-6 lg:space-x-8">
+                    <a href="#home" class="nav-link text-gray-600 hover:text-accent-blue font-semibold">Home</a>
+                    <a href="#about" class="nav-link text-gray-600 hover:text-accent-blue font-semibold">Sobre Nós</a>
+                    <a href="#services" class="nav-link text-gray-600 hover:text-accent-blue font-semibold">Serviços</a>
+                    <a href="#faq" class="nav-link text-gray-600 hover:text-accent-blue font-semibold">FAQ</a>
+                    <button onclick="toggleSection('blog-section')" class="nav-link text-gray-600 hover:text-accent-blue font-semibold">Blog</button>
+                    <button onclick="toggleSection('create-section')" class="nav-link text-gray-600 hover:text-accent-blue font-semibold">Criar Memorial</button>
+                    <button onclick="toggleSection('contact-section')" class="nav-link text-gray-600 hover:text-accent-blue font-semibold">Contato</button>
+                </div>
+                <div class="md:hidden">
+                    <button class="text-gray-600 hover:text-gray-900 focus:outline-none" id="mobile-menu-button">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- Mobile menu -->
+            <div class="md:hidden hidden pt-4" id="mobile-menu">
+                <div class="flex flex-col space-y-1 bg-white rounded-md p-2 shadow-xl border border-gray-300">
+                    <a href="#home" class="block py-2 px-4 text-sm text-gray-800 hover:bg-gray-200 hover:text-accent-blue rounded mobile-nav-link font-semibold">Home</a>
+                    <a href="#about" class="block py-2 px-4 text-sm text-gray-800 hover:bg-gray-200 hover:text-accent-blue rounded mobile-nav-link font-semibold">Sobre Nós</a>
+                    <a href="#services" class="block py-2 px-4 text-sm text-gray-800 hover:bg-gray-200 hover:text-accent-blue rounded mobile-nav-link font-semibold">Serviços</a>
+                    <a href="#faq" class="block py-2 px-4 text-sm text-gray-800 hover:bg-gray-200 hover:text-accent-blue rounded mobile-nav-link font-semibold">FAQ</a>
+                    <button onclick="toggleSection('blog-section'); closeMobileMenu();" class="block w-full text-left py-2 px-4 text-sm text-gray-800 hover:bg-gray-200 hover:text-accent-blue rounded font-semibold">Blog</button>
+                    <button onclick="toggleSection('create-section'); closeMobileMenu();" class="block w-full text-left py-2 px-4 text-sm text-gray-800 hover:bg-gray-200 hover:text-accent-blue rounded font-semibold">Criar Memorial</button>
+                    <button onclick="toggleSection('contact-section'); closeMobileMenu();" class="block w-full text-left py-2 px-4 text-sm text-gray-800 hover:bg-gray-200 hover:text-accent-blue rounded font-semibold">Contato</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-bg py-20 md:py-32">
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <!-- Text colors remain dark, as the overlay is still light -->
+            <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6 title-font">Conectando Memórias para Eternidade</h1>
+            <p class="text-xl md:text-2xl text-gray-800 mb-10 max-w-3xl mx-auto">Preserve a história e as lembranças de quem você ama com nossos memoriais digitais e placas QR Code personalizadas.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button onclick="toggleSection('create-section')" class="bg-accent-blue hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-300 transform hover:scale-105 shadow-lg">Crie Seu Memorial</button>
+                <a href="#services" class="bg-transparent hover:bg-blue-500/10 text-accent-blue font-semibold py-3 px-8 rounded-lg border border-accent-blue transition duration-300 transform hover:scale-105 shadow-md hover:border-blue-400">Saiba Mais</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-16 bg-white"> <!-- Using lightest background -->
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div class="text-center px-6">
+                    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-300">
+                        <i class="fas fa-qrcode text-accent-blue text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Placas QR Code</h3>
+                    <p class="text-gray-600">Placas personalizadas e duráveis para instalação em lápides, conectando visitantes ao memorial digital.</p>
+                </div>
+                <div class="text-center px-6">
+                    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-300">
+                        <i class="fas fa-memory text-accent-blue text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Memoriais Digitais</h3>
+                    <p class="text-gray-600">Páginas personalizadas que celebram a vida e o legado do ente querido, reunindo histórias, fotos e mensagens em um só lugar.</p>
+                </div>
+                <div class="text-center px-6">
+                    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-300">
+                        <i class="fas fa-shield-alt text-accent-blue text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Preservação Garantida</h3>
+                    <p class="text-gray-600">Nossos memoriais são mantidos online permanentemente, garantindo que as memórias nunca se percam.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-light-secondary-bg"> <!-- Using light-secondary-bg -->
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center gap-10 md:gap-16">
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6 title-font">Sobre o MemoriumQR</h2>
+                    <p class="text-gray-800 mb-4">Fundado em 2020, o MemoriumQR nasceu da necessidade de criar conexões significativas entre as pessoas e suas memórias mais preciosas, mesmo após a partida.</p>
+                    <p class="text-gray-800 mb-6">Nossa missão é oferecer soluções tecnológicas elegantes e respeitosas que permitam às famílias preservar e compartilhar histórias de vida de maneira acessível e duradoura.</p>
+                    <a href="#services" class="inline-block bg-accent-blue hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-300 shadow hover:shadow-md">Nossos Serviços</a>
+                </div>
+                <div class="md:w-1/2">
+                    <div class="relative">
+                        <img src="https://i.postimg.cc/DZMRqTSt/pexels-kseniachernaya-9002578.jpg" alt="Equipe MemoriumQR" class="rounded-lg shadow-xl w-full">
+                        <!-- The element displaying "+500 famílias atendidas" was removed -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-16 bg-white"> <!-- Lightest BG -->
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center text-gray-900 mb-12 title-font">Depoimentos</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonials on slightly darker light background -->
+                <div class="bg-gray-100 rounded-lg p-6 testimonial-card border border-gray-300">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center mr-3 shrink-0 border border-gray-300">
+                            <i class="fas fa-user text-accent-blue"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-900">Ana Carolina</h4>
+                            <p class="text-gray-600 text-sm">Filha</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-800">"O memorial que criamos para meu pai foi a maneira perfeita de manter viva sua memória. Agora toda a família pode acessar suas histórias e fotos a qualquer momento."</p>
+                </div>
+                 <div class="bg-gray-100 rounded-lg p-6 testimonial-card border border-gray-300">
+                    <div class="flex items-center mb-4">
+                         <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center mr-3 shrink-0 border border-gray-300">
+                            <i class="fas fa-user text-accent-blue"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-900">Roberto Almeida</h4>
+                            <p class="text-gray-600 text-sm">Neto</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-800">"A placa QR no túmulo da minha avó permite que eu mostre aos meus filhos quem ela foi, mesmo eles não tendo tido a chance de conhecê-la pessoalmente."</p>
+                </div>
+                 <div class="bg-gray-100 rounded-lg p-6 testimonial-card border border-gray-300">
+                    <div class="flex items-center mb-4">
+                         <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center mr-3 shrink-0 border border-gray-300">
+                            <i class="fas fa-user text-accent-blue"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-900">Mariana Santos</h4>
+                            <p class="text-gray-600 text-sm">Esposa</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-800">"O processo de criação do memorial foi terapêutico. Reunir todas as memórias do meu marido me ajudou no processo de luto e agora temos um lugar especial para visitá-lo."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-light-secondary-bg"> <!-- Lighter light BG -->
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-16 title-font">Nossos Serviços</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-16">
+                <!-- Service Cards -->
+                <div class="bg-white rounded-xl p-8 service-card transition duration-300 shadow-lg border border-gray-300">
+                    <div class="flex items-center mb-6">
+                        <div class="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mr-4 shrink-0 border border-gray-300">
+                            <i class="fas fa-qrcode text-accent-blue text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-gray-900">Placas QR Code Personalizadas</h3>
+                    </div>
+                    <p class="text-gray-800 mb-4">Placas duráveis e elegantes para instalação em lápides, monumentos ou urnas, contendo um QR Code que direciona para o memorial digital.</p>
+                    <ul class="mb-6 space-y-2">
+                        <li class="flex items-center text-gray-800"><i class="fas fa-check-circle text-accent-blue mr-2 shrink-0"></i>Materiais premium: aço inoxidável, bronze ou acrílico</li>
+                        <li class="flex items-center text-gray-800"><i class="fas fa-check-circle text-accent-blue mr-2 shrink-0"></i>Resistente a intempéries e desgaste</li>
+                        <li class="flex items-center text-gray-800"><i class="fas fa-check-circle text-accent-blue mr-2 shrink-0"></i>Design personalizado com nome e datas</li>
+                    </ul>
+                    <p class="text-gray-900 font-semibold mb-4">A partir de R$ 299</p>
+                    <button onclick="toggleSection('create-section')" class="inline-block bg-accent-blue hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-300 shadow hover:shadow-md">Solicitar Orçamento</button>
+                </div>
+
+                <div class="bg-white rounded-xl p-8 service-card transition duration-300 shadow-lg border border-gray-300">
+                    <div class="flex items-center mb-6">
+                        <div class="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mr-4 shrink-0 border border-gray-300">
+                            <i class="fas fa-memory text-accent-blue text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-gray-900">Memoriais Digitais</h3>
+                    </div>
+                    <p class="text-gray-800 mb-4">Páginas personalizadas que celebram a vida e o legado do ente querido, reunindo histórias, fotos e mensagens em um só lugar.</p>
+                    <ul class="mb-6 space-y-2">
+                        <li class="flex items-center text-gray-800"><i class="fas fa-check-circle text-accent-blue mr-2 shrink-0"></i>Biografia completa e linha do tempo</li>
+                        <li class="flex items-center text-gray-800"><i class="fas fa-check-circle text-accent-blue mr-2 shrink-0"></i>Galeria de fotos e vídeos</li>
+                        <li class="flex items-center text-gray-800"><i class="fas fa-check-circle text-accent-blue mr-2 shrink-0"></i>Seção de mensagens e depoimentos</li>
+                        <li class="flex items-center text-gray-800"><i class="fas fa-check-circle text-accent-blue mr-2 shrink-0"></i>Acesso privado ou público</li>
+                    </ul>
+                    <p class="text-gray-900 font-semibold mb-4">A partir de R$ 499</p>
+                    <button onclick="toggleSection('create-section')" class="inline-block bg-accent-blue hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-300 shadow hover:shadow-md">Começar Agora</button>
+                </div>
+            </div>
+
+             <!-- Portfolio Content - CORRECTED AND IMAGES UPDATED -->
+             <div class="mt-20 pt-10 border-t border-gray-300">
+                 <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 title-font">Exemplos de Memoriais</h2>
+                <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">Veja exemplos de memoriais que criamos para homenagear vidas especiais.</p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Memorial da Sra. Beatriz - Image Updated -->
+                    <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-accent-blue/20 transition duration-300 border border-gray-300">
+                        <div class="portfolio-image" style="background-image: url('https://i.postimg.cc/brLvTMH1/pexels-rdne-8865719.jpg')"></div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Memorial da Sra. Beatriz</h3>
+                            <p class="text-gray-600 mb-4 text-sm">Um memorial completo com biografia, galeria de fotos desde a juventude até os últimos anos, e mensagens da família.</p>
+                            <a href="#" class="text-accent-blue font-medium hover:text-blue-400 text-sm">Ver Detalhes →</a>
+                        </div>
+                    </div>
+                    <!-- Memorial do Sr. João - Image Updated -->
+                     <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-accent-blue/20 transition duration-300 border border-gray-300">
+                        <div class="portfolio-image" style="background-image: url('https://i.postimg.cc/NFb1HdKz/pexels-ivan-samkov-8964078.jpg')"></div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Memorial do Sr. João</h3>
+                            <p class="text-gray-600 mb-4 text-sm">Detalhes sobre sua paixão por música, viagens e momentos inesquecíveis com amigos.</p>
+                            <a href="#" class="text-accent-blue font-medium hover:text-blue-400 text-sm">Ver Detalhes →</a>
+                        </div>
+                    </div>
+                    <!-- Homenagem à Dona Elena - Image Updated -->
+                     <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-accent-blue/20 transition duration-300 border border-gray-300">
+                        <div class="portfolio-image" style="background-image: url('https://i.postimg.cc/prnH96c2/pexels-rdne-6841294.jpg')"></div>
+                        <div class="p-6">
+                            <span class="text-gray-600 text-sm font-medium mb-1">Homenagem</span>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2 mt-1 flex-grow">Homenagem à Dona Elena</h3>
+                            <p class="text-gray-800 mb-4 text-sm">Uma coleção de receitas de família, histórias e momentos preciosos ao longo de sua vida.</p>
+                            <a href="#" class="text-accent-blue font-medium hover:text-blue-400 text-sm mt-auto self-start">Ver Detalhes →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 text-center">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Nossas Placas QR em Lápides</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                        <div class="bg-white h-32 flex items-center justify-center rounded-lg shadow-md border border-gray-300">
+                            <i class="fas fa-qrcode text-accent-blue text-4xl"></i>
+                        </div>
+                         <div class="bg-white h-32 flex items-center justify-center rounded-lg shadow-md border border-gray-300">
+                            <i class="fas fa-qrcode text-accent-blue text-4xl"></i>
+                        </div>
+                         <div class="bg-white h-32 flex items-center justify-center rounded-lg shadow-md border border-gray-300">
+                            <i class="fas fa-qrcode text-accent-blue text-4xl"></i>
+                        </div>
+                         <div class="bg-white h-32 flex items-center justify-center rounded-lg shadow-md border border-gray-300">
+                            <i class="fas fa-qrcode text-accent-blue text-4xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End of CORRECTED Portfolio Content -->
+
+            <!-- Package Deal Section -->
+            <div class="bg-white rounded-xl p-8 mt-16 shadow-lg border border-gray-300">
+                <h3 class="text-2xl font-semibold text-gray-900 mb-4 text-center">Pacote Completo</h3>
+                <p class="text-gray-800 text-center mb-6 max-w-2xl mx-auto">Combine a placa QR Code com o memorial digital e receba um desconto especial, além de manutenção vitalícia do memorial.</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-6">
+                    <div class="text-center">
+                        <p class="text-gray-800">Placa QR + Memorial Digital</p>
+                        <p class="text-3xl font-bold text-accent-blue">R$ 699</p>
+                        <p class="text-gray-600 text-sm">(Economize R$ 99)</p>
+                    </div>
+                    <button onclick="toggleSection('create-section')" class="inline-block bg-accent-blue hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-300 transform hover:scale-105 shadow hover:shadow-md">Quero o Pacote Completo</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Parallax Section -->
+    <section class="py-32 text-gray-900 parallax" style="background-image: url('https://i.postimg.cc/C57Jtsmp/pexels-nilufer-kayaduman-57406690-7919440.jpg');">
+         <div class="absolute inset-0 bg-white opacity-75"></div> <!-- Lighter Overlay -->
+         <div class="container mx-auto px-6 text-center relative z-10">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6 title-font text-gray-900">Preservando Histórias, Conectando Gerações</h2>
+            <p class="text-xl text-gray-800 max-w-3xl mx-auto mb-8">Cada vida é uma história única que merece ser lembrada e compartilhada. Nós ajudamos a preservar essas memórias para que elas continuem inspirando as gerações futuras.</p>
+            <a href="#about" class="inline-block bg-accent-blue hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-300 shadow-lg hover:shadow-xl">Conheça Nossa História</a>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20 bg-light-secondary-bg"> <!-- Lighter light BG -->
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12 title-font">Perguntas Frequentes</h2>
+
+            <div class="max-w-3xl mx-auto space-y-4">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-300">
+                    <button class="faq-question w-full text-left p-5 sm:p-6 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue focus-visible:ring-offset-2 focus-visible:ring-offset-gray-100">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-900">Quanto tempo leva para criar um memorial?</h3>
+                            <i class="fas fa-chevron-down text-accent-blue transition-transform duration-300 shrink-0 ml-4"></i>
+                        </div>
+                    </button>
+                    <div class="faq-answer px-6 pb-6 hidden">
+                        <p class="text-gray-800 mt-2">O tempo médio é de 3 a 5 dias úteis após recebermos todas as informações e materiais necessários. Memorial simples podem ficar prontos em até 48 horas, enquanto projetos mais complexos podem levar até 7 dias.</p>
+                    </div>
+                </div>
+                 <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-300">
+                     <button class="faq-question w-full text-left p-5 sm:p-6 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue focus-visible:ring-offset-2 focus-visible:ring-offset-gray-100">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-900">Como funciona a placa QR Code?</h3>
+                            <i class="fas fa-chevron-down text-accent-blue transition-transform duration-300 shrink-0 ml-4"></i>
+                        </div>
+                    </button>
+                    <div class="faq-answer px-6 pb-6 hidden">
+                        <p class="text-gray-800 mt-2">Nossas placas contêm um QR Code único que, quando escaneado com qualquer smartphone, direciona imediatamente para o memorial digital. Não é necessário instalar nenhum aplicativo especial - a câmera do celular ou qualquer leitor de QR Code padrão funciona.</p>
+                    </div>
+                </div>
+                 <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-300">
+                     <button class="faq-question w-full text-left p-5 sm:p-6 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue focus-visible:ring-offset-2 focus-visible:ring-offset-gray-100">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-900">Posso atualizar o memorial depois de pronto?</h3>
+                            <i class="fas fa-chevron-down text-accent-blue transition-transform duration-300 shrink-0 ml-4"></i>
+                        </div>
+                    </button>
+                    <div class="faq-answer px-6 pb-6 hidden">
+                        <p class="text-gray-800 mt-2">Sim, você pode adicionar fotos, vídeos ou mensagens a qualquer momento através de nosso painel de controle. Alterações na estrutura do memorial (como modificações na biografia principal) podem ser solicitadas através de nosso suporte.</p>
+                    </div>
+                </div>
+                 <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-300">
+                     <button class="faq-question w-full text-left p-5 sm:p-6 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue focus-visible:ring-offset-2 focus-visible:ring-offset-gray-100">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-900">Quem pode acessar o memorial?</h3>
+                            <i class="fas fa-chevron-down text-accent-blue transition-transform duration-300 shrink-0 ml-4"></i>
+                        </div>
+                    </button>
+                    <div class="faq-answer px-6 pb-6 hidden">
+                        <p class="text-gray-800 mt-2">Você escolhe: o memorial pode ser público (acessível a qualquer pessoa com o link) ou privado (somente pessoas com o link e senha podem acessar). Também oferecemos a opção de memorial semi-privado, onde apenas convidados podem deixar mensagens.</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-300">
+                     <button class="faq-question w-full text-left p-5 sm:p-6 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue focus-visible:ring-offset-2 focus-visible:ring-offset-gray-100">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-900">Quanto tempo o memorial fica online?</h3>
+                            <i class="fas fa-chevron-down text-accent-blue transition-transform duration-300 shrink-0 ml-4"></i>
+                        </div>
+                    </button>
+                    <div class="faq-answer px-6 pb-6 hidden">
+                        <p class="text-gray-800 mt-2">Garantimos a hospedagem do memorial por no mínimo 10 anos. Com a opção de manutenção vitalícia, o memorial permanece online indefinidamente, com atualizações regulares para compatibilidade com novas tecnologias.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <p class="text-gray-600 mb-4">Tem outra dúvida?</p>
+                <button onclick="toggleSection('contact-section')" class="inline-block bg-accent-blue hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-300 shadow hover:shadow-md">Entre em Contato</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- HIDDEN SECTIONS START HERE -->
+
+    <!-- Create Memorial Section (Hidden by default) -->
+    <section id="create-section" class="py-20 bg-light-secondary-bg hidden-section"> <!-- Lighter Light BG -->
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 title-font">Crie Seu Memorial</h2>
+                <button onclick="toggleSection('create-section')" class="text-gray-600 hover:text-gray-900 transition-colors" aria-label="Fechar Criação de Memorial">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <p class="text-gray-600 mb-12 max-w-3xl mx-auto text-center">Preencha as informações abaixo para começarmos a criar um memorial personalizado para seu ente querido.</p>
+
+            <div class="max-w-4xl mx-auto bg-white rounded-xl p-6 sm:p-8 shadow-xl border border-gray-300">
+                <form class="memorial-form space-y-8">
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4 border-b border-gray-300 pb-2">Informações Básicas</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-800 mb-1">Nome Completo</label>
+                                <input type="text" id="name" class="w-full px-1 focus:outline-none">
+                            </div>
+                            <div>
+                                <label for="relationship" class="block text-sm font-medium text-gray-800 mb-1">Seu Relacionamento</label>
+                                <input type="text" id="relationship" class="w-full px-1 focus:outline-none">
+                            </div>
+                            <div>
+                                <label for="birth" class="block text-sm font-medium text-gray-800 mb-1">Data de Nascimento</label>
+                                <input type="date" id="birth" class="w-full px-1 focus:outline-none">
+                            </div>
+                            <div>
+                                <label for="death" class="block text-sm font-medium text-gray-800 mb-1">Data de Falecimento</label>
+                                <input type="date" id="death" class="w-full px-1 focus:outline-none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4 border-b border-gray-300 pb-2">Biografia</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="bio" class="block text-sm font-medium text-gray-800 mb-1">Conte-nos sobre a vida dessa pessoa</label>
+                                <textarea id="bio" rows="5" class="w-full px-1 focus:outline-none"></textarea>
+                            </div>
+                            <div>
+                                <label for="achievements" class="block text-sm font-medium text-gray-800 mb-1">Conquistas e Legado (opcional)</label>
+                                <textarea id="achievements" rows="3" class="w-full px-1 focus:outline-none"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                         <h3 class="text-xl font-semibold text-gray-900 mb-4 border-b border-gray-300 pb-2">Mídias</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-800 mb-1">Fotos para Incluir (máx. 10)</label>
+                                <label for="photo-upload-input" class="block w-full cursor-pointer border-2 border-dashed border-gray-300 rounded-lg p-6 text-center bg-gray-100 hover:bg-gray-200 transition">
+                                    <i class="fas fa-cloud-upload-alt text-gray-400 text-3xl mb-2"></i>
+                                    <p class="text-sm text-gray-500">Arraste e solte fotos aqui ou <span class="text-accent-blue font-semibold">clique para selecionar</span></p>
+                                </label>
+                                <input type="file" id="photo-upload-input" multiple class="hidden" accept="image/*">
+                            </div>
+                            <div>
+                                <label for="videos" class="block text-sm font-medium text-gray-800 mb-1">Links para Vídeos (YouTube, Vimeo, etc.)</label>
+                                <input type="text" id="videos" class="w-full px-1 focus:outline-none" placeholder="Cole os links separados por vírgula">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4 border-b border-gray-300 pb-2">Personalização</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                            <div>
+                                <label for="design" class="block text-sm font-medium text-gray-800 mb-1">Estilo do Memorial</label>
+                                <select id="design" class="w-full px-1 focus:outline-none">
+                                    <option value="" class="bg-light-secondary-bg text-gray-600">Selecione um estilo</option>
+                                    <option value="classic" class="bg-light-secondary-bg text-gray-800">Clássico</option>
+                                    <option value="modern" class="bg-light-secondary-bg text-gray-800">Moderno</option>
+                                    <option value="minimal" class="bg-light-secondary-bg text-gray-800">Minimalista</option>
+                                    <option value="nature" class="bg-light-secondary-bg text-gray-800">Natureza</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="color" class="block text-sm font-medium text-gray-800 mb-1">Cor Principal</label>
+                                <select id="color" class="w-full px-1 focus:outline-none">
+                                     <option value="" class="bg-light-secondary-bg text-gray-600">Selecione uma cor</option>
+                                     <option value="blue" class="bg-light-secondary-bg text-gray-800">Azul (Padrão)</option>
+                                     <option value="purple" class="bg-light-secondary-bg text-gray-800">Roxo</option>
+                                     <option value="teal" class="bg-light-secondary-bg text-gray-800">Verde-Azulado</option>
+                                     <option value="gray" class="bg-light-secondary-bg text-gray-800">Cinza</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4 border-b border-gray-300 pb-2">Opções Adicionais</h3>
+                        <div class="space-y-3">
+                            <label class="flex items-center cursor-pointer">
+                                <input type="checkbox" class="form-checkbox mr-2 shrink-0">
+                                <span class="text-sm text-gray-800">Incluir placa QR Code (<span class="font-medium">R$ 299</span> adicional)</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer">
+                                <input type="checkbox" class="form-checkbox mr-2 shrink-0">
+                                <span class="text-sm text-gray-800">Manutenção vitalícia do memorial (<span class="font-medium">R$ 99/ano</span> após o primeiro ano)</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer">
+                                <input type="checkbox" class="form-checkbox mr-2 shrink-0">
+                                <span class="text-sm text-gray-800">Acesso privado (protegido por senha)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="pt-6">
+                        <button type="submit" class="w-full bg-accent-blue hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 shadow hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-blue focus:ring-offset-white">Visualizar Memorial e Finalizar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section (Hidden by default) -->
+    <section id="blog-section" class="py-20 bg-light-secondary-bg hidden-section"> <!-- Lighter Light BG -->
+        <div class="container mx-auto px-6">
+             <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 title-font">Artigos Recentes</h2>
+                <button onclick="toggleSection('blog-section')" class="text-gray-600 hover:text-gray-900 transition-colors" aria-label="Fechar Blog">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">Compartilhando conhecimentos sobre preservação de memórias e processos de luto.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-accent-blue/20 transition duration-300 flex flex-col border border-gray-300">
+                    <div class="blog-image" style="background-image: url('https://i.postimg.cc/nrJjHCxk/pexels-cottonbro-8848784.jpg')"></div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <span class="text-accent-blue text-sm font-medium mb-1">Preservação Digital</span>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2 mt-1 flex-grow">Como a tecnologia está transformando a maneira como lembramos</h3>
+                        <p class="text-gray-800 mb-4 text-sm">Exploramos as novas formas digitais de preservar memórias e seu impacto no processo de luto.</p>
+                        <a href="#" class="text-accent-blue font-medium hover:text-blue-400 text-sm mt-auto self-start">Ler Artigo →</a>
+                    </div>
+                </div>
+                 <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-accent-blue/20 transition duration-300 flex flex-col flex-grow border border-gray-300">
+                    <div class="blog-image" style="background-image: url('https://i.postimg.cc/QM2TV6sh/pexels-liksunenok-11824783.jpg')"></div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <span class="text-accent-blue text-sm font-medium mb-1">Processo de Luto</span>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2 mt-1 flex-grow">Criando rituais significativos em tempos digitais</h3>
+                        <p class="text-gray-800 mb-4 text-sm">Como os memoriais online podem se tornar parte importante do processo de elaboração do luto.</p>
+                        <a href="#" class="text-accent-blue font-medium hover:text-blue-400 text-sm mt-auto self-start">Ler Artigo →</a>
+                    </div>
+                </div>
+                 <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-accent-blue/20 transition duration-300 flex flex-col flex-grow border border-gray-300">
+                    <div class="blog-image" style="background-image: url('https://i.postimg.cc/hvJzgj2y/pexels-askar-abayev-5638701.jpg')"></div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <span class="text-accent-blue text-sm font-medium mb-1">História Familiar</span>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2 mt-1 flex-grow">Preservando histórias para as futuras gerações</h3>
+                        <p class="text-gray-800 mb-4 text-sm">Dicas para documentar e compartilhar histórias de vida que podem se perder com o tempo.</p>
+                        <a href="#" class="text-accent-blue font-medium hover:text-blue-400 text-sm mt-auto self-start">Ler Artigo →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <a href="#" class="inline-block bg-transparent hover:bg-blue-500/10 text-accent-blue font-semibold py-3 px-8 rounded-lg border border-accent-blue transition duration-300 shadow hover:shadow-md hover:border-blue-400">Ver Todos os Artigos</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section (Hidden by default) -->
+    <section id="contact-section" class="py-20 bg-light-secondary-bg text-gray-900 hidden-section"> <!-- Lighter Light BG -->
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl md:text-4xl font-bold title-font text-gray-900">Entre em Contato</h2>
+                <button onclick="toggleSection('contact-section')" class="text-gray-600 hover:text-gray-900 transition-colors" aria-label="Fechar Contato">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-10 max-w-6xl mx-auto">
+                <div class="md:w-1/2">
+                     <h3 class="text-xl font-semibold mb-4 text-gray-900">Envie sua mensagem</h3>
+                     <form class="space-y-5">
+                        <div>
+                            <label for="contact-name" class="block text-sm font-medium text-gray-800 mb-1">Seu Nome</label>
+                            <input type="text" id="contact-name" name="contact-name" class="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent">
+                        </div>
+                        <div>
+                            <label for="contact-email" class="block text-sm font-medium text-gray-800 mb-1">Seu E-mail</label>
+                            <input type="email" id="contact-email" name="contact-email" class="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent">
+                        </div>
+                        <div>
+                            <label for="contact-subject" class="block text-sm font-medium text-gray-800 mb-1">Assunto</label>
+                            <input type="text" id="contact-subject" name="contact-subject" class="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent">
+                        </div>
+                        <div>
+                            <label for="contact-message" class="block text-sm font-medium text-gray-800 mb-1">Mensagem</label>
+                            <textarea id="contact-message" name="contact-message" rows="5" class="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent"></textarea>
+                        </div>
+                        <div>
+                            <button type="submit" class="bg-accent-blue hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-300 w-full shadow hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-blue focus:ring-offset-gray-100">Enviar Mensagem</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="md:w-1/2">
+                     <h3 class="text-xl font-semibold mb-4 text-gray-900">Informações de Contato</h3>
+                    <div class="bg-white rounded-xl p-6 sm:p-8 h-full border border-gray-300">
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-4 mt-1 shrink-0 border border-gray-300">
+                                    <i class="fas fa-map-marker-alt text-accent-blue"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">Endereço</h4>
+                                    <p class="text-gray-800 text-sm">Rua das Memórias, 123<br>Centro, São Paulo - SP, CEP: 01000-000</p>
+                                </div>
+                            </div>
+                             <div class="flex items-start">
+                                <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-4 mt-1 shrink-0 border border-gray-300">
+                                    <i class="fas fa-phone-alt text-accent-blue"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">Telefone</h4>
+                                    <p class="text-gray-800 text-sm">(11) 1234-5678<br>(11) 98765-4321 (WhatsApp)</p>
+                                </div>
+                            </div>
+                             <div class="flex items-start">
+                                <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-4 mt-1 shrink-0 border border-gray-300">
+                                    <i class="fas fa-envelope text-accent-blue"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">E-mail</h4>
+                                    <p class="text-gray-800 text-sm">contato@memoriumqr.com.br<br>suporte@memoriumqr.com.br</p>
+                                </div>
+                            </div>
+                             <div class="flex items-start">
+                                <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-4 mt-1 shrink-0 border border-gray-300">
+                                    <i class="fas fa-clock text-accent-blue"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">Horário de Atendimento</h4>
+                                    <p class="text-gray-800 text-sm">Segunda a Sexta: 9h às 18h<br>Sábado: 9h às 13h</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-gray-300">
+                            <h4 class="font-medium text-gray-900 mb-3">Siga-nos</h4>
+                            <div class="flex space-x-4">
+                                <a href="#" aria-label="Facebook" class="w-10 h-10 bg-gray-200 hover:bg-accent-blue text-gray-700 hover:text-white rounded-full flex items-center justify-center transition duration-300">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="#" aria-label="Twitter" class="w-10 h-10 bg-gray-200 hover:bg-accent-blue text-gray-700 hover:text-white rounded-full flex items-center justify-center transition duration-300">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="#" aria-label="Instagram" class="w-10 h-10 bg-gray-200 hover:bg-accent-blue text-gray-700 hover:text-white rounded-full flex items-center justify-center transition duration-300">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="#" aria-label="Youtube" class="w-10 h-10 bg-gray-200 hover:bg-accent-blue text-gray-700 hover:text-white rounded-full flex items-center justify-center transition duration-300">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HIDDEN SECTIONS END HERE -->
+
+    <!-- Footer -->
+    <footer class="bg-light-secondary-bg text-gray-600 py-12 border-t border-gray-300" style="background-color: #bdc7eb;">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center mr-3 shrink-0 border border-gray-300">
+                            <i class="fas fa-qrcode text-accent-blue"></i>
+                        </div>
+                        <span class="text-xl font-semibold text-gray-900 title-font">MemoriumQR</span>
+                    </div>
+                    <p class="mb-4 text-sm text-gray-800">Conectando memórias para eternidade através da tecnologia.</p>
+                    <p class="text-xs text-gray-600">© 2024 MemoriumQR. Todos os direitos reservados.</p>
+                </div>
+
+                <div>
+                    <h4 class="text-gray-900 font-semibold mb-4 text-lg">Links Rápidos</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#home" class="hover:text-accent-blue transition duration-300">Home</a></li>
+                        <li><a href="#about" class="hover:text-accent-blue transition duration-300">Sobre Nós</a></li>
+                        <li><a href="#services" class="hover:text-accent-blue transition duration-300">Serviços</a></li>
+                        <li><a href="#faq" class="hover:text-accent-blue transition duration-300">FAQ</a></li>
+                        <li><button onclick="toggleSection('blog-section')" class="hover:text-accent-blue transition duration-300 text-left">Blog</button></li>
+                        <li><button onclick="toggleSection('create-section')" class="hover:text-accent-blue transition duration-300 text-left">Criar Memorial</button></li>
+                         <li><button onclick="toggleSection('contact-section')" class="hover:text-accent-blue transition duration-300 text-left">Contato</button></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-gray-900 font-semibold mb-4 text-lg">Serviços</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#services" class="hover:text-accent-blue transition duration-300">Placas QR Code</a></li>
+                        <li><a href="#services" class="hover:text-accent-blue transition duration-300">Memoriais Digitais</a></li>
+                        <li><a href="#services" class="hover:text-accent-blue transition duration-300">Pacote Completo</a></li>
+                        <li><a href="#faq" class="hover:text-accent-blue transition duration-300">Manutenção Vitalícia</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-gray-900 font-semibold mb-4 text-lg">Newsletter</h4>
+                    <p class="mb-4 text-sm text-gray-800">Receba novidades e artigos sobre preservação de memórias.</p>
+                    <form class="flex">
+                        <label for="footer-email" class="sr-only">Seu e-mail</label>
+                        <input type="email" id="footer-email" placeholder="Seu e-email" required class="bg-white text-gray-800 px-4 py-2 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-accent-blue w-full text-sm border border-gray-300 focus:border-transparent placeholder-gray-500">
+                        <button type="submit" class="bg-accent-blue hover:bg-blue-700 text-white px-4 py-2 rounded-r-lg transition duration-300 shrink-0">
+                            <i class="fas fa-paper-plane"></i>
+                            <span class="sr-only">Assinar</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-300 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center text-xs text-gray-600">
+                <p>Desenvolvido com <i class="fas fa-heart text-gray-500 mx-1"></i> pela equipe MemoriumQR</p> <!-- Subtle grey heart -->
+                <div class="flex space-x-4 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-accent-blue transition duration-300">Termos de Serviço</a>
+                    <a href="#" class="hover:text-accent-blue transition duration-300">Política de Privacidade</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const mainNav = document.getElementById('main-nav');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        // Estimate nav height, will be updated on scroll or resize if needed
+        let navHeight = mainNav ? mainNav.offsetHeight : 70;
+
+        // --- Mobile Menu Handling ---
+        function openMobileMenu() {
+            if (mobileMenu) mobileMenu.classList.remove('hidden');
+        }
+        function closeMobileMenu() {
+            if (mobileMenu) mobileMenu.classList.add('hidden');
+        }
+
+        if (mobileMenuButton) {
+            mobileMenuButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                 if (mobileMenu && mobileMenu.classList.contains('hidden')) {
+                     openMobileMenu();
+                 } else {
+                     closeMobileMenu();
+                 }
+            });
+        }
+
+        // Close mobile menu if clicking outside
+        document.addEventListener('click', (e) => {
+             if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                 if (!mainNav.contains(e.target)) { // Clicked outside the nav bar
+                     closeMobileMenu();
+                 }
+             }
+         });
+
+        // --- Section Toggling ---
+        // Define the sections that can be toggled via buttons
+        const toggleableSectionIds = ['blog-section', 'create-section', 'contact-section'];
+
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (!section) return; // Exit if section not found
+
+            const isCurrentlyVisible = !section.classList.contains('hidden-section');
+
+            // If the clicked section is already visible, hide it and return
+            if (isCurrentlyVisible) {
+                section.classList.add('hidden-section');
+                // Optional: scroll to a default section (like FAQ or top) after closing
+                // window.scrollTo({ top: 0, behavior: 'smooth' }); // Example: scroll to top
+                return; // Stop here
+            }
+
+            // If the clicked section is hidden, first hide all other toggleable sections
+            toggleableSectionIds.forEach(id => {
+                const secToHide = document.getElementById(id);
+                if (secToHide && id !== sectionId) { // Ensure element exists and is not the target
+                    secToHide.classList.add('hidden-section');
+                }
+            });
+
+            // Then show the target section
+            section.classList.remove('hidden-section');
+
+            // Scroll to the target section after it's displayed
+             // Use setTimeout to allow the browser to render the section and calculate its size/position
+             setTimeout(() => {
+                 // Re-get nav height just in case it changed (though unlikely for fixed nav)
+                 const currentNavHeight = mainNav.offsetHeight;
+                 const elementPosition = section.getBoundingClientRect().top;
+                 const offsetPosition = elementPosition + window.pageYOffset - currentNavHeight - 20; // Scroll 20px above the section below nav
+
+                 window.scrollTo({
+                     top: offsetPosition,
+                     behavior: 'smooth'
+                 });
+             }, 150); // A short delay, adjust if needed
+        }
+
+        // --- FAQ Accordion ---
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                if (!answer || !answer.classList.contains('faq-answer')) return;
+
+                const icon = question.querySelector('i.fa-chevron-down');
+                const isCurrentlyOpen = !answer.classList.contains('hidden');
+
+                // Close all other open answers
+                document.querySelectorAll('.faq-answer').forEach(ans => {
+                    if (ans !== answer && !ans.classList.contains('hidden')) {
+                        ans.classList.add('hidden');
+                        // Find and rotate the icon of the other question back
+                        const otherIcon = ans.previousElementSibling.querySelector('i.fa-chevron-down');
+                        if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
+                    }
+                });
+
+                // Toggle the current answer
+                answer.classList.toggle('hidden');
+
+                // Rotate icon of the current question
+                if (icon) {
+                     icon.style.transform = isCurrentlyOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+                }
+            });
+        });
+
+        // --- Smooth Scrolling for In-Page Links ---
+        document.querySelectorAll('nav a[href^="#"], .mobile-nav-link').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
+                if (!targetId || targetId === '#') return;
+
+                // Exclude links that point to the toggleable sections handled by the buttons
+                if (toggleableSectionIds.map(id => `#${id}`).includes(targetId)) {
+                     // Let the button's onclick handle it, or prevent default if this link is not a button
+                     if (this.tagName.toLowerCase() === 'a') {
+                          e.preventDefault();
+                         // You could potentially call toggleSection from here if the link wasn't a button
+                         // For now, rely on the buttons having onclick
+                     }
+                     // For mobile menu links (which are <a> but call toggleSection and close), let the toggleSection handle hiding others.
+                     // Just ensure the mobile menu closes.
+                     if (this.classList.contains('mobile-nav-link')) {
+                          closeMobileMenu();
+                     }
+                     return; // Stop processing if it's one of the toggleable section links/buttons
+                }
+
+
+                // Handle standard hash links that are not toggleable sections
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    e.preventDefault();
+
+                    // Hide any open toggleable sections before scrolling to a fixed one
+                     toggleableSectionIds.forEach(id => {
+                         const secToHide = document.getElementById(id);
+                         if (secToHide) {
+                             secToHide.classList.add('hidden-section');
+                         }
+                     });
+
+
+                    // Scroll to the target element
+                    const currentNavHeight = mainNav.offsetHeight;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - currentNavHeight - 10; // Scroll 10px above below nav
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+
+                    // Close mobile menu if this link was in the mobile menu
+                    if (this.classList.contains('mobile-nav-link')) {
+                         closeMobileMenu();
+                    }
+                }
+            });
+        });
+
+         // --- Handle File Upload Input Label Interaction ---
+         const photoUploadInput = document.getElementById('photo-upload-input');
+         const photoUploadLabel = document.querySelector('label[for="photo-upload-input"]');
+
+         if (photoUploadInput && photoUploadLabel) {
+             photoUploadInput.addEventListener('change', () => {
+                 let fileCount = photoUploadInput.files.length;
+                 if (fileCount > 0) {
+                     photoUploadLabel.innerHTML = `
+                         <i class="fas fa-check-circle text-green-500 text-3xl mb-2"></i>
+                         <p class="text-sm text-gray-600">${fileCount} arquivo(s) selecionado(s).</p>
+                     `;
+                     // photoUploadLabel.classList.remove('text-accent-blue'); // This line might cause issues if text-accent-blue wasn't the only text color class on the label initially
+                     // Let's just ensure the text color inside the label is correct via the p tag.
+                     photoUploadLabel.querySelector('p').classList.remove('text-gray-500');
+                     photoUploadLabel.querySelector('p').classList.add('text-gray-600');
+
+                 } else {
+                     photoUploadLabel.innerHTML = `
+                         <i class="fas fa-cloud-upload-alt text-gray-400 text-3xl mb-2"></i>
+                         <p class="text-sm text-gray-500">Arraste e solte fotos aqui ou <span class="text-accent-blue font-semibold">clique para selecionar</span></p>
+                     `;
+                      photoUploadLabel.querySelector('p').classList.remove('text-gray-600');
+                      photoUploadLabel.querySelector('p').classList.add('text-gray-500');
+                 }
+             });
+         }
+
+         // Optional: Adjust navHeight on scroll (if nav might change size) - though less common for fixed nav
+         // window.addEventListener('scroll', () => {
+         //     if (mainNav) {
+         //          navHeight = mainNav.offsetHeight;
+         //     }
+         // });
+
+
+    </script>
+</body>
+</html>
